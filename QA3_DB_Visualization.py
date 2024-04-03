@@ -1,29 +1,27 @@
 import sqlite3
 
-# Connect to the database
-conn = sqlite3.connect('quiz_database.db')
-cursor = conn.cursor()
+def display_table(table_name):
+    # Connect to the database
+    conn = sqlite3.connect('quiz_database.db')
+    cursor = conn.cursor()
 
-def print_table_data(table_name):
-    # Retrieve data from the specified table
+    # Retrieve data from the table
     cursor.execute(f"SELECT * FROM {table_name}")
     rows = cursor.fetchall()
 
-    # Print the table header
-    print(f"Table: {table_name}\n")
-    if len(rows) == 0:
-        print("No data available.")
-        return
+    # Print table header
+    print(f"\nTable: {table_name}\n")
+    print("{:<5} {:<100} {:<100}".format("ID", "Question", "Answer"))
 
-    # Print data row by row
+    # Print table data
     for row in rows:
-        print(row)
-    print("\n")
+        print("{:<5} {:<100} {:<100}".format(row[0], row[1], row[2]))
 
-# Print data from each table
-tables = ["Finance", "Analytics", "Management", "Analytic_Thinking"]
+    # Close connection
+    conn.close()
+
+# Display tables
+tables = ["Finance", "Analytics", "Management", "Analytic_Thinking", "Apps_Development"]
 for table in tables:
-    print_table_data(table)
+    display_table(table)
 
-# Close connection
-conn.close()
