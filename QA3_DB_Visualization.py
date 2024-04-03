@@ -24,4 +24,3 @@ def display_table(table_name):
 tables = ["Finance", "Analytics", "Management", "Analytic_Thinking", "Apps_Development"]
 for table in tables:
     display_table(table)
-
