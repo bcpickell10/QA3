@@ -50,7 +50,10 @@ class QuizApp:
             radio_button.pack()
 
         self.submit_button = tk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
-        self.submit_button.pack(side=tk.BOTTOM)
+        self.submit_button.pack(side=tk.LEFT)
+
+        self.next_button = tk.Button(self.quiz_window, text="Next Question", command=self.next_question)
+        self.next_button.pack(side=tk.RIGHT)
 
     def check_answer(self):
         selected_answer = self.answer_var.get()
@@ -65,6 +68,33 @@ class QuizApp:
 
         self.feedback_label = tk.Label(self.quiz_window, text=feedback, fg=color)
         self.feedback_label.pack()
+
+        self.submit_button.config(state=tk.DISABLED)
+        self.next_button.config(state=tk.NORMAL)
+
+    def next_question(self):
+        self.current_question_index += 1
+        if self.current_question_index < self.total_questions:
+            self.update_question_answers()
+        else:
+            messagebox.showinfo("Quiz Completed", "You have completed the quiz!")
+
+    def update_question_answers(self):
+        self.question_label.config(text="")
+
+        self.question_label.config(text=self.questions[self.current_question_index][0])
+
+        self.answer_var.set("")
+        for widget in self.quiz_window.winfo_children():
+            if isinstance(widget, tk.Radiobutton):
+                widget.destroy()
+
+        for choice in self.questions[self.current_question_index][1].split(", "):
+            radio_button = tk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
+            radio_button.pack()
+
+        self.submit_button.config(state=tk.NORMAL)
+        self.next_button.config(state=tk.DISABLED)
 
     def get_correct_answer(self):
         return self.questions[self.current_question_index][2]
