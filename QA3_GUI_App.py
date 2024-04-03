@@ -57,29 +57,14 @@ class QuizApp:
         correct_answer = self.get_correct_answer()
 
         if selected_answer == correct_answer:
-            messagebox.showinfo("Result", "Correct!", icon="info")
+            feedback = "Correct!"
+            color = "green"
         else:
-            messagebox.showerror("Result", "Incorrect", icon="warning")
+            feedback = "Incorrect. Correct answer: " + correct_answer
+            color = "red"
 
-        self.current_question_index += 1
-        if self.current_question_index < self.total_questions:
-            self.update_question_answers()
-        else:
-            messagebox.showinfo("Quiz Completed", "You have completed the quiz!")
-
-    def update_question_answers(self):
-        self.question_label.config(text="")
-
-        self.question_label.config(text=self.questions[self.current_question_index][0])
-
-        self.answer_var.set("")
-        for widget in self.quiz_window.winfo_children():
-            if isinstance(widget, tk.Radiobutton):
-                widget.destroy()
-
-        for choice in self.questions[self.current_question_index][1].split(", "):
-            radio_button = tk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
-            radio_button.pack()
+        self.feedback_label = tk.Label(self.quiz_window, text=feedback, fg=color)
+        self.feedback_label.pack()
 
     def get_correct_answer(self):
         return self.questions[self.current_question_index][2]
