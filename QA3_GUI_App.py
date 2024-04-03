@@ -84,7 +84,6 @@ class QuizApp:
         if self.current_question_index < self.total_questions:
             self.update_question_answers()
         else:
-            messagebox.showinfo("Quiz Completed", "You have completed the quiz!")
             self.show_score()
 
     def update_question_answers(self):
@@ -108,21 +107,25 @@ class QuizApp:
         return self.questions[self.current_question_index][2]
 
     def show_score(self):
+        total_correct = sum(1 for q in self.questions if self.answer_var.get() == q[2])
         score_window = tk.Toplevel(self.root)
         score_window.title("Quiz Score")
-
-        total_correct = sum(1 for q in self.questions if self.answer_var.get() == q[2])
 
         score_label = ttk.Label(score_window, text=f"Your score: {total_correct}/{self.total_questions}")
         score_label.pack(pady=10)
 
-        retry_button = ttk.Button(score_window, text="Take Another Quiz", command=self.retry_quiz)
+        retry_button = ttk.Button(score_window, text="Take Another Quiz", command=self.retry_quiz(score_window))
         retry_button.pack()
 
-    def retry_quiz(self):
-        self.quiz_window.destroy()
-        self.root.deiconify()
+    def retry_quiz(self, window):
+        def close_window():
+            window.destroy()
+            self.quiz_window.destroy()
+            self.root.deiconify()
+
+        return close_window
 
 root = tk.Tk()
 app = QuizApp(root)
 root.mainloop()
+
