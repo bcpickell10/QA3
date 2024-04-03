@@ -81,8 +81,7 @@ class QuizApp:
             radio_button = tk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
             radio_button.pack()
 
-        self.submit_button = tk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
-        self.submit_button.pack()
+        self.submit_button.config(command=self.check_answer)
 
     def get_correct_answer(self):
         return self.questions[self.current_question_index][2]
