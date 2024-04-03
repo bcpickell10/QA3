@@ -40,11 +40,12 @@ class QuizApp:
         self.current_question_index = 0
         self.total_questions = len(self.questions)
 
-        self.question_label = tk.Label(self.quiz_window, text=self.questions[self.current_question_index][1])
+        self.question_label = tk.Label(self.quiz_window, text=self.questions[self.current_question_index][0])
         self.question_label.pack()
 
         self.answer_var = tk.StringVar()
-        for choice in self.questions[self.current_question_index][2].split(", "):
+
+        for choice in self.questions[self.current_question_index][1].split(", "):
             radio_button = tk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
             radio_button.pack()
 
@@ -68,27 +69,23 @@ class QuizApp:
 
     def update_question_answers(self):
         self.question_label.config(text="")
-        self.submit_button.pack_forget()
 
-        self.question_label.config(text=self.questions[self.current_question_index][1])
+        self.question_label.config(text=self.questions[self.current_question_index][0])
 
         self.answer_var.set("")
-        for choice in self.questions[self.current_question_index][2].split(", "):
+        for widget in self.quiz_window.winfo_children():
+            if isinstance(widget, tk.Radiobutton):
+                widget.destroy()
+
+        for choice in self.questions[self.current_question_index][1].split(", "):
             radio_button = tk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
             radio_button.pack()
 
+        self.submit_button = tk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
         self.submit_button.pack()
 
     def get_correct_answer(self):
-        conn = sqlite3.connect('quiz_database.db')
-        cursor = conn.cursor()
-
-        cursor.execute(f"SELECT Answers FROM {self.category_combo.get()}")
-        correct_answer = cursor.fetchall()[self.current_question_index][0]
-
-        conn.close()
-
-        return correct_answer
+        return self.questions[self.current_question_index][2]
 
 root = tk.Tk()
 app = QuizApp(root)
