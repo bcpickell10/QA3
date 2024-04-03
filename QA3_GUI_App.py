@@ -23,8 +23,8 @@ class QuizApp:
             messagebox.showerror("Error", "Please select a category!")
             return
 
-        self.root.destroy()
-        self.quiz_window = tk.Tk()
+        self.root.withdraw()
+        self.quiz_window = tk.Toplevel()
         self.quiz_window.title("Quiz")
 
         self.display_question_answers(category)
@@ -50,10 +50,10 @@ class QuizApp:
             radio_button.pack()
 
         self.submit_button = tk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
-        self.submit_button.pack(side=tk.LEFT)
+        self.submit_button.pack(side=tk.BOTTOM, padx=5, pady=5)
 
         self.next_button = tk.Button(self.quiz_window, text="Next Question", command=self.next_question)
-        self.next_button.pack(side=tk.RIGHT)
+        self.next_button.pack(side=tk.BOTTOM, padx=5, pady=5)
 
     def check_answer(self):
         selected_answer = self.answer_var.get()
@@ -63,7 +63,7 @@ class QuizApp:
             feedback = "Correct!"
             color = "green"
         else:
-            feedback = "Incorrect. Correct answer: " + correct_answer
+            feedback = f"Incorrect. Correct answer: {correct_answer}"
             color = "red"
 
         self.feedback_label = tk.Label(self.quiz_window, text=feedback, fg=color)
@@ -73,11 +73,16 @@ class QuizApp:
         self.next_button.config(state=tk.NORMAL)
 
     def next_question(self):
+        if hasattr(self, 'feedback_label'):
+            self.feedback_label.destroy()
+
         self.current_question_index += 1
         if self.current_question_index < self.total_questions:
             self.update_question_answers()
         else:
             messagebox.showinfo("Quiz Completed", "You have completed the quiz!")
+            self.quiz_window.destroy()
+            self.root.quit()
 
     def update_question_answers(self):
         self.question_label.config(text="")
