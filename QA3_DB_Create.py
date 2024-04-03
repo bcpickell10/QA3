@@ -1,37 +1,41 @@
 import sqlite3
 
-# Connect to the database
+# Connect to the database (creates a new database if not exist)
 conn = sqlite3.connect('quiz_database.db')
 cursor = conn.cursor()
 
-# Create tables
-cursor.execute('''CREATE TABLE IF NOT EXISTS Finance (
-                    Question_ID INTEGER PRIMARY KEY,
-                    Question TEXT,
-                    Answer TEXT)''')
+# Create Finance table
+cursor.execute('''CREATE TABLE Finance (
+                Question TEXT PRIMARY KEY,
+                Answer_Choices TEXT,
+                Answers TEXT)''')
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS Analytics (
-                    Question_ID INTEGER PRIMARY KEY,
-                    Question TEXT,
-                    Answer TEXT)''')
+# Create Analytics table
+cursor.execute('''CREATE TABLE Analytics (
+                Question TEXT PRIMARY KEY,
+                Answer_Choices TEXT,
+                Answers TEXT)''')
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS Management (
-                    Question_ID INTEGER PRIMARY KEY,
-                    Question TEXT,
-                    Answer TEXT)''')
+# Create Management table
+cursor.execute('''CREATE TABLE Management (
+                Question TEXT PRIMARY KEY,
+                Answer_Choices TEXT,
+                Answers TEXT)''')
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS Analytic_Thinking (
-                    Question_ID INTEGER PRIMARY KEY,
-                    Question TEXT,
-                    Answer TEXT)''')
+# Create Analytic Thinking table
+cursor.execute('''CREATE TABLE Analytic_Thinking (
+                Question TEXT PRIMARY KEY,
+                Answer_Choices TEXT,
+                Answers TEXT)''')
 
-cursor.execute('''CREATE TABLE IF NOT EXISTS Apps_Development (
-                    Question_ID INTEGER PRIMARY KEY,
-                    Question TEXT,
-                    Answer TEXT)''')
+# Create Apps Development table
+cursor.execute('''CREATE TABLE Apps_Development (
+                Question TEXT PRIMARY KEY,
+                Answer_Choices TEXT,
+                Answers TEXT)''')
 
 # Commit changes and close connection
 conn.commit()
 conn.close()
 
-print("Tables created successfully!")
+print("Tables created successfully.")
