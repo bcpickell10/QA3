@@ -1,7 +1,6 @@
 import tkinter as tk
-from tkinter import ttk
+from tkinter import ttk, messagebox
 import sqlite3
-from tkinter import messagebox
 
 class QuizApp:
     def __init__(self, root):
@@ -86,8 +85,7 @@ class QuizApp:
             self.update_question_answers()
         else:
             messagebox.showinfo("Quiz Completed", "You have completed the quiz!")
-            self.quiz_window.destroy()
-            self.root.quit()
+            self.show_score()
 
     def update_question_answers(self):
         self.question_label.config(text="")
@@ -108,6 +106,22 @@ class QuizApp:
 
     def get_correct_answer(self):
         return self.questions[self.current_question_index][2]
+
+    def show_score(self):
+        score_window = tk.Toplevel(self.root)
+        score_window.title("Quiz Score")
+
+        total_correct = sum(1 for q in self.questions if self.answer_var.get() == q[2])
+
+        score_label = ttk.Label(score_window, text=f"Your score: {total_correct}/{self.total_questions}")
+        score_label.pack(pady=10)
+
+        retry_button = ttk.Button(score_window, text="Take Another Quiz", command=self.retry_quiz)
+        retry_button.pack()
+
+    def retry_quiz(self):
+        self.quiz_window.destroy()
+        self.root.deiconify()
 
 root = tk.Tk()
 app = QuizApp(root)
