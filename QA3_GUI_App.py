@@ -10,7 +10,7 @@ class QuizApp:
 
         self.style = ttk.Style()
         self.style.configure('TFrame', background='#ececec')
-        self.style.configure('TButton', background='#0078d7', foreground='#ffffff', font=('Arial', 10, 'bold'))
+        self.style.configure('TButton', background='#0078d7', foreground='#000000', font=('Arial', 10, 'bold'))
         self.style.configure('TLabel', background='#ececec', foreground='#333333', font=('Arial', 10))
 
         self.category_label = ttk.Label(root, text="Select Category:")
@@ -54,11 +54,11 @@ class QuizApp:
             radio_button = ttk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
             radio_button.pack()
 
-        self.submit_button = ttk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
-        self.submit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
-
         self.next_button = ttk.Button(self.quiz_window, text="Next Question", command=self.next_question)
         self.next_button.pack(side=tk.BOTTOM, padx=10, pady=10)
+
+        self.submit_button = ttk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
+        self.submit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
     def check_answer(self):
         selected_answer = self.answer_var.get()
