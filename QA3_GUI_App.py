@@ -8,13 +8,18 @@ class QuizApp:
         self.root = root
         self.root.title("Quiz App")
 
-        self.category_label = tk.Label(root, text="Select Category:")
+        self.style = ttk.Style()
+        self.style.configure('TFrame', background='#ececec')
+        self.style.configure('TButton', background='#0078d7', foreground='#ffffff', font=('Arial', 10, 'bold'))
+        self.style.configure('TLabel', background='#ececec', foreground='#333333', font=('Arial', 10))
+
+        self.category_label = ttk.Label(root, text="Select Category:")
         self.category_label.pack()
 
         self.category_combo = ttk.Combobox(root, values=["Finance", "Analytics", "Management", "Analytic_Thinking", "Apps_Development"])
         self.category_combo.pack()
 
-        self.start_button = tk.Button(root, text="Start Quiz Now", command=self.start_quiz)
+        self.start_button = ttk.Button(root, text="Start Quiz Now", command=self.start_quiz)
         self.start_button.pack()
 
     def start_quiz(self):
@@ -40,20 +45,20 @@ class QuizApp:
         self.current_question_index = 0
         self.total_questions = len(self.questions)
 
-        self.question_label = tk.Label(self.quiz_window, text=self.questions[self.current_question_index][0])
-        self.question_label.pack()
+        self.question_label = ttk.Label(self.quiz_window, text=self.questions[self.current_question_index][0])
+        self.question_label.pack(pady=10)
 
         self.answer_var = tk.StringVar()
 
         for choice in self.questions[self.current_question_index][1].split(", "):
-            radio_button = tk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
+            radio_button = ttk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
             radio_button.pack()
 
-        self.submit_button = tk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
-        self.submit_button.pack(side=tk.BOTTOM, padx=5, pady=5)
+        self.submit_button = ttk.Button(self.quiz_window, text="Submit Answer", command=self.check_answer)
+        self.submit_button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
-        self.next_button = tk.Button(self.quiz_window, text="Next Question", command=self.next_question)
-        self.next_button.pack(side=tk.BOTTOM, padx=5, pady=5)
+        self.next_button = ttk.Button(self.quiz_window, text="Next Question", command=self.next_question)
+        self.next_button.pack(side=tk.BOTTOM, padx=10, pady=10)
 
     def check_answer(self):
         selected_answer = self.answer_var.get()
@@ -66,7 +71,7 @@ class QuizApp:
             feedback = f"Incorrect. Correct answer: {correct_answer}"
             color = "red"
 
-        self.feedback_label = tk.Label(self.quiz_window, text=feedback, fg=color)
+        self.feedback_label = ttk.Label(self.quiz_window, text=feedback, foreground=color)
         self.feedback_label.pack()
 
         self.submit_button.config(state=tk.DISABLED)
@@ -91,11 +96,11 @@ class QuizApp:
 
         self.answer_var.set("")
         for widget in self.quiz_window.winfo_children():
-            if isinstance(widget, tk.Radiobutton):
+            if isinstance(widget, ttk.Radiobutton):
                 widget.destroy()
 
         for choice in self.questions[self.current_question_index][1].split(", "):
-            radio_button = tk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
+            radio_button = ttk.Radiobutton(self.quiz_window, text=choice, variable=self.answer_var, value=choice)
             radio_button.pack()
 
         self.submit_button.config(state=tk.NORMAL)
